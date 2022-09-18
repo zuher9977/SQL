@@ -1,0 +1,197 @@
+-- Retrieve all data from employees table
+
+select * from employees;
+
+_______________________________________________________________________________________________________________________
+-- Retrieve first_name, last_name, phone_number and salary for all employees
+
+select first_name, last_name, phone_number,salary from employees;
+
+_______________________________________________________________________________________________________________________
+-- Retrieve first_name, last_name, phone_number and salary for all employees they have salary
+greater than 4800
+
+select first_name, last_name, phone_number,salary from employees where salary> 4800;
+
+select first_name, last_name, phone_number,salary from employees where first_name='Steven' and salary> 4800;
+
+_______________________________________________________________________________________________________________________
+-- Retrieve first_name, last_name, phone_number and salary for all employees they have salary
+greater than 4800 and hired before 01-01-1995
+
+select * from employees where hire_date<=CONVERT(datetime,'01-01-1995') and salary> 4800;
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the employee information they have phone number start with 515
+
+where name like 'a%'الي ببلش ب حرف a
+where name like '%a' الي بنتهي بحرف a
+where name like '%a%' الي بحتوي على حرف a
+
+select * from employees where phone_number like '515%';
+ 
+_______________________________________________________________________________________________________________________
+-- Retrieve job_title for jobs it’s salary range between 9000 and 15000
+
+select job_title from jobs where min_salary between'9000' and '15000'; 
+
+_______________________________________________________________________________________________________________________
+-- Retrieve all information for employees they are hired during the 01-01-1990 and 31-12-1995
+
+select * from employees where hire_date between CONVERT(datetime,'01-01-1990') and CONVERT(datetime,'12-31-1995'); 
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the employee first_name, last_name, salary, and his manager name
+
+select emp.first_name,emp.last_name,emp.salary,mgr.first_name 
+from employees emp inner join employees mgr 
+on(emp.manager_id = mgr.employee_id)  ; 
+
+مثال من المحاضرة
+select countries.country_name,regions.region_name from countries inner join regions on(countries.region_id = regions.region_id); 
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the employee information with the name of departments that working in it, and his job title
+
+select employees.first_name,departments.department_name,jobs.job_title
+from employees inner join departments
+on (employees.department_id=departments.department_id)
+inner join jobs on(employees.job_id=jobs.job_id)
+_______________________________________________________________________________________________________________________
+-- Retrieve all employee information with the city they are working in it.
+
+select employees.first_name,locations.city
+from employees inner join departments
+on (employees.department_id=departments.department_id)
+inner join locations on(departments.location_id=locations.location_id)
+
+_______________________________________________________________________________________________________________________
+-- Retrieve job_title that has employees
+
+select jobs.job_title
+from employees inner join jobs on(employees.job_id=jobs.job_id)
+
+_______________________________________________________________________________________________________________________
+-- Retrieve all job_title that has and hasn’t employee
+
+select jobs.job_title
+from employees right join jobs on(employees.job_id=jobs.job_id)
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the information of top manager
+
+select *
+from employees 
+where (manager_id is null)
+_______________________________________________________________________________________________________________________
+-- Retrieve the first_name, last_name and email for employees they don’t have phone_number
+
+
+select first_name,last_name,email
+from employees where phone_number is null
+_______________________________________________________________________________________________________________________
+-- Retrieve the count of employees
+
+select count(first_name)
+from employees
+_______________________________________________________________________________________________________________________
+-- Retrieve the name of departments and number of employees working on it
+
+select departments.department_name, count(employees.department_id)
+from employees inner join departments
+on (employees.department_id=departments.department_id)
+group by department_name
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the name of departments they pay more than 20000 salary
+
+select departments.department_name , count(salary)
+from employees inner join departments
+on (employees.department_id=departments.department_id)
+group by departments.department_name
+having sum(employees.salary)>20000
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the highest 3 salaries
+
+select top 3 salary
+from employees order by salary desc
+_______________________________________________________________________________________________________________________
+-- Retrieve all information for the employees they have highest 3 salaries
+
+select top 3 *
+from employees order by salary desc
+_______________________________________________________________________________________________________________________
+-- Retrieve the total salary of employees
+
+select sum(salary)
+from employees
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the average salary of employees
+
+select avg(salary)
+from employees
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the average salary for each department
+
+select department_name,avg(salary)
+from employees inner join departments
+on (employees.department_id=departments.department_id)
+group by department_name
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the number of locations in each country
+
+select country_name,count(locations.location_id)
+from locations inner join countries
+on(locations.country_id=countries.country_id)
+group by country_name
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the name of departments with the city and country name
+
+
+select department_name,city,country_name
+from locations inner join countries
+on (locations.country_id=countries.country_id)
+inner join departments
+on(departments.location_id=locations.location_id)
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the number of departments for each country
+
+
+select country_name,count(department_id)
+from locations inner join countries
+on (locations.country_id=countries.country_id)
+inner join departments
+on(departments.location_id=locations.location_id)
+group by countries.country_name
+_______________________________________________________________________________________________________________________
+-- Retrieve the number of employees for each job title
+
+select job_title,count(employees.employee_id)
+from employees inner join jobs
+on (employees.job_id=jobs.job_id)
+group by job_title
+
+_______________________________________________________________________________________________________________________
+-- Retrieve the only the employee’s information they have dependents
+
+select *
+from employees inner join dependents
+on (dependents.employee_id=employees.employee_id)
+
+_______________________________________________________________________________________________________________________
+-- Retrieve all employee’s information they have dependents or not
+
+select *
+from employees left join dependents
+on (dependents.employee_id=employees.employee_id)
+
+
+
+
+

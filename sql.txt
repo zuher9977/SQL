@@ -1,0 +1,60 @@
+-- 1. Write a query to display name of brand and it’s number of products
+
+select Brands.name,COUNT(Products.brand_id)
+from Products inner join Brands
+on(Products.brand_id=Brands.id)
+group by Brands.name
+
+
+______________________________________________________________________________
+-- 2. Write a query to display name of category and it’s product price #
+
+select Categories.name,Products.Price
+from Products inner join Categories
+on(Products.Category_id=Categories.id) -- القديم
+
+
+select Categories.name,sum(Products.Price)
+from Products inner join Categories
+on(Products.Category_id=Categories.id)
+group by Categories.name -- معدل
+______________________________________________________________________________
+-- 3. Write a query to display the staff name and his/her manager name 
+
+select emp.first_name emp,mgr.first_name manager 
+from Staffs emp inner join Staffs mgr
+on(emp.manager_id=mgr.id)
+
+________________________________________________________________________________
+-- 4. Write a query to display name of customer and price of all orders 
+
+select Customers.First_Name,SUM(Order_items.Price)
+from Orders inner join Customers
+on(Orders.Customer_id=Customers.id)
+inner join Order_items
+on(Order_items.Order_id=Orders.id)
+group by Customers.First_Name -- مجموع كل المشتريات
+
+select Customers.First_Name,Order_items.Price
+from Orders inner join Customers
+on(Orders.Customer_id=Customers.id)
+inner join Order_items
+on(Order_items.Order_id=Orders.id) -- جميع مشترياته
+
+________________________________________________________________________________
+
+--  5. Write a query to display the number of customer of each store 
+
+select Stores.Name,COUNT(Customers.id)
+from Orders inner join Stores
+on(Orders.Store_id=Stores.ID)
+inner join Customers on (Orders.Customer_id=Customers.id)
+group by Stores.Name
+________________________________________________________________________________
+
+--  6. Write a query to display staff name and number of customer his/her served 
+select Staffs.first_name,count(Customers.First_Name)
+from Orders inner join Staffs
+on(Orders.Staff_id=Staffs.id)
+inner join Customers on (Orders.Customer_id=Customers.id)
+group by Staffs.first_name
